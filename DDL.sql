@@ -41,17 +41,17 @@ CREATE TABLE Dim_Client(
 
 
 CREATE TABLE Dim_Product(
-	SK_Producto INT AUTO_INCREMENT PRIMARY KEY,
+	SK_Product INT AUTO_INCREMENT PRIMARY KEY,
     Product_ID VARCHAR(15),
+    Product_Name VARCHAR(255),
     Category VARCHAR(50),
     Sub_Category VARCHAR(50),
-    Product_Name VARCHAR(255),
     Timestamp DATETIME
 );
 
 
 CREATE TABLE Dim_Order(
-	SK_Pedido INT AUTO_INCREMENT PRIMARY KEY,
+	SK_Order INT AUTO_INCREMENT PRIMARY KEY,
     Order_ID VARCHAR(14), 
     Ship_Mode VARCHAR(50),
     Timestamp DATETIME
