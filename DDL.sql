@@ -1,5 +1,4 @@
 CREATE DATABASE STORE;
-
 USE STORE;
 
 
@@ -30,15 +29,13 @@ CREATE TABLE Dim_Date(
     same_day_year_ago_date DATE
 );
 
-
-CREATE TABLE Dim_Client(
+CREATE TABLE Dim_Customer(
 	SK_Customer INT AUTO_INCREMENT PRIMARY KEY,
     Customer_ID VARCHAR(8),
     Customer_Name VARCHAR(255), 
     Segment VARCHAR(50),
     Timestamp DATETIME
 );
-
 
 CREATE TABLE Dim_Product(
 	SK_Product INT AUTO_INCREMENT PRIMARY KEY,
@@ -49,14 +46,12 @@ CREATE TABLE Dim_Product(
     Timestamp DATETIME
 );
 
-
 CREATE TABLE Dim_Order(
 	SK_Order INT AUTO_INCREMENT PRIMARY KEY,
     Order_ID VARCHAR(14), 
     Ship_Mode VARCHAR(50),
     Timestamp DATETIME
 );
-
 
 CREATE TABLE Dim_Location(
 	SK_Location INT AUTO_INCREMENT PRIMARY KEY,
@@ -68,7 +63,43 @@ CREATE TABLE Dim_Location(
     Timestamp DATETIME
 );
 
+-- TABLA DE HECHOS
+CREATE TABLE Sales_Fact(
+    SK_Customer INT NOT NULL REFERENCES Dim_Customer(SK_Customer), 
+    SK_Product INT NOT NULL REFERENCES Dim_Product(SK_Product),
+    SK_Order INT NOT NULL REFERENCES Dim_Order(SK_Order),
+    SK_Location INT NOT NULL REFERENCES Dim_Location(SK_Location),
+    SK_Order_Date INT NOT NULL REFERENCES Dim_Date(date_key),
+    SK_Ship_Date INT NOT NULL REFERENCES Dim_Date(date_key),
+    Row_ID INT,
+    Sales DECIMAL(18,2) DEFAULT NULL,
+    Quantity INT DEFAULT NULL,
+    Discount DECIMAL(18,2) DEFAULT NULL,
+    Profit DECIMAL(18,2) DEFAULT NULL  
+);
 
--- FALTA TABLA DE HECHOS
--- Aun no la he hecho porque queria implementar de alguna manera lo de las slow changing dimensions. 
--- La opcion que se miraba mas entendible era una SCD - Tipo 2, pero no se que piensan los demas
+
+-- TABLA DE STAGING (script generado por Tableau)
+CREATE TABLE `sales_staging` (
+  `Row_ID` bigint DEFAULT NULL,
+  `Order_ID` text,
+  `Order_Date` datetime DEFAULT NULL,
+  `Ship_Date` datetime DEFAULT NULL,
+  `Ship_Mode` text,
+  `Customer_ID` text,
+  `Customer_Name` text,
+  `Segment` text,
+  `Country` text,
+  `City` text,
+  `State` text,
+  `Postal_Code` bigint DEFAULT NULL,
+  `Region` text,
+  `Product_ID` text,
+  `Product_Name` text,
+  `Category` text,
+  `Sub_Category` text,
+  `Sales` double DEFAULT NULL,
+  `Quantity` bigint DEFAULT NULL,
+  `Discount` double DEFAULT NULL,
+  `Profit` double DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
