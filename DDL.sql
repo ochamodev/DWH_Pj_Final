@@ -30,7 +30,7 @@ CREATE TABLE Dim_Date(
 );
 
 CREATE TABLE Dim_Customer(
-	SK_Customer INT AUTO_INCREMENT PRIMARY KEY,
+    SK_Customer INT AUTO_INCREMENT PRIMARY KEY,
     Customer_ID VARCHAR(8),
     Customer_Name VARCHAR(255), 
     Segment VARCHAR(50),
@@ -38,7 +38,7 @@ CREATE TABLE Dim_Customer(
 );
 
 CREATE TABLE Dim_Product(
-	SK_Product INT AUTO_INCREMENT PRIMARY KEY,
+    SK_Product INT AUTO_INCREMENT PRIMARY KEY,
     Product_ID VARCHAR(15),
     Product_Name VARCHAR(255),
     Category VARCHAR(50),
@@ -46,15 +46,14 @@ CREATE TABLE Dim_Product(
     Timestamp DATETIME
 );
 
-CREATE TABLE Dim_Order(
-	SK_Order INT AUTO_INCREMENT PRIMARY KEY,
-    Order_ID VARCHAR(14), 
+CREATE TABLE Dim_Ship_Mode(
+    SK_Ship_Mode INT AUTO_INCREMENT PRIMARY KEY,
     Ship_Mode VARCHAR(50),
     Timestamp DATETIME
 );
 
 CREATE TABLE Dim_Location(
-	SK_Location INT AUTO_INCREMENT PRIMARY KEY,
+    SK_Location INT AUTO_INCREMENT PRIMARY KEY,
     Country VARCHAR(50), 
     Region VARCHAR(10),
     State VARCHAR(50),
@@ -67,17 +66,17 @@ CREATE TABLE Dim_Location(
 CREATE TABLE Sales_Fact(
     SK_Customer INT NOT NULL REFERENCES Dim_Customer(SK_Customer), 
     SK_Product INT NOT NULL REFERENCES Dim_Product(SK_Product),
-    SK_Order INT NOT NULL REFERENCES Dim_Order(SK_Order),
+    SK_Ship_Mode INT NOT NULL REFERENCES Dim_Ship_Mode(SK_Ship_Mode),
     SK_Location INT NOT NULL REFERENCES Dim_Location(SK_Location),
     SK_Order_Date INT NOT NULL REFERENCES Dim_Date(date_key),
     SK_Ship_Date INT NOT NULL REFERENCES Dim_Date(date_key),
+    Order_ID VARCHAR(14),
     Row_ID INT,
     Sales DECIMAL(18,2) DEFAULT NULL,
     Quantity INT DEFAULT NULL,
     Discount DECIMAL(18,2) DEFAULT NULL,
     Profit DECIMAL(18,2) DEFAULT NULL  
 );
-
 
 -- TABLA DE STAGING (script generado por Tableau)
 CREATE TABLE `sales_staging` (
